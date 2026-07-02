@@ -1,58 +1,115 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Biblioteca Pessoal
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema web para gerenciamento de biblioteca pessoal, desenvolvido em Laravel.
 
-## About Laravel
+## Descrição
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+A aplicação permite que o usuário cadastre e organize os livros que possui, controlando o status de leitura de cada um (Quero Ler / Lendo / Lido), avaliando os livros já lidos e mantendo anotações pessoais. Conta com busca por título/autor, filtro por status e um painel com contagem de livros por status.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tecnologias utilizadas
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Laravel 12** (PHP 8.2+)
+- **Laravel Breeze** — autenticação (stack Blade + Tailwind)
+- **Laravel Boost** — guidelines, skills e servidor MCP para desenvolvimento assistido por IA
+- **SQLite** — banco de dados
+- **Tailwind CSS** — estilização
+- **PHPUnit** — testes automatizados (Feature tests)
 
-## Learning Laravel
+## Requisitos
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- PHP 8.2 ou superior
+- Composer
+- Node.js e npm
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instalação
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+1. Clone o repositório e acesse a pasta do projeto:
+   ```bash
+   git clone <url-do-repositorio>
+   cd biblioteca-pessoal
+   ```
 
-## Agentic Development
+2. Instale as dependências PHP:
+   ```bash
+   composer install
+   ```
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+3. Instale as dependências JS e compile os assets:
+   ```bash
+   npm install
+   npm run build
+   ```
+
+4. Copie o arquivo de ambiente e gere a chave da aplicação:
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+5. Configure o banco de dados SQLite no `.env`:
+   ```
+   DB_CONNECTION=sqlite
+   ```
+   (remova ou comente as demais variáveis `DB_*`)
+
+6. Crie o arquivo do banco:
+   ```bash
+   touch database/database.sqlite
+   ```
+
+7. Rode as migrations e os seeders:
+   ```bash
+   php artisan migrate --seed
+   ```
+
+8. Suba o servidor:
+   ```bash
+   php artisan serve
+   ```
+
+9. Acesse `http://127.0.0.1:8000` no navegador.
+
+## Usuário de teste
+
+| E-mail | Senha | Perfil |
+|---|---|---|
+| admin@teste.com | password | Usuário padrão (dono do acervo de livros de exemplo) |
+
+## Executando os testes
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+php artisan test
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Ou apenas os testes do CRUD de livros:
+```bash
+php artisan test --filter=BookTest
+```
 
-## Contributing
+## Estrutura relevante do projeto
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+├── app/
+│   ├── Http/Controllers/BookController.php
+│   ├── Http/Requests/StoreBookRequest.php
+│   ├── Http/Requests/UpdateBookRequest.php
+│   └── Models/Book.php
+├── database/
+│   ├── factories/BookFactory.php
+│   ├── migrations/..._create_books_table.php
+│   └── seeders/BookSeeder.php
+├── resources/views/books/
+│   ├── index.blade.php
+│   ├── create.blade.php
+│   ├── edit.blade.php
+│   └── _form.blade.php
+├── tests/Feature/BookTest.php
+├── .claude/skills/           # Skills de IA (identidade visual, CRUD, segurança, testes)
+├── PLANO_IMPLEMENTACAO.md
+└── RELATORIO.md
+```
 
-## Code of Conduct
+## Documentação adicional
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- [PLANO_IMPLEMENTACAO.md](./PLANO_IMPLEMENTACAO.md) — plano elaborado antes do desenvolvimento
+- [RELATORIO.md](./RELATORIO.md) — relatório completo do processo de desenvolvimento
