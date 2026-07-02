@@ -34,7 +34,10 @@ class BookController extends Controller
 
     public function store(StoreBookRequest $request)
     {
-        auth()->user()->books()->create($request->validated());
+        $data = $request->validated();
+        $data['rating'] = $data['status'] === 'lido' ? $data['rating'] : null;
+
+        auth()->user()->books()->create($data);
 
         return redirect()->route('books.index')->with('success', 'Livro criado com sucesso.');
     }
@@ -48,7 +51,10 @@ class BookController extends Controller
 
     public function update(UpdateBookRequest $request, Book $book)
     {
-        $book->update($request->validated());
+        $data = $request->validated();
+        $data['rating'] = $data['status'] === 'lido' ? $data['rating'] : null;
+
+        $book->update($data);
 
         return redirect()->route('books.index')->with('success', 'Livro atualizado com sucesso.');
     }
